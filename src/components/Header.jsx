@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { app } from "../firebase.config";
-
+import {useCart} from "react-use-cart";
 import Logo from "../img/logo.png";
 import Avatar from "../img/avatar.png";
 import { Link } from "react-router-dom";
@@ -18,11 +18,14 @@ const Header = () => {
     const firebaseAuth = getAuth(app);
     const provider = new GoogleAuthProvider();
 
-    const [{ user, cartShow, cartItems }, dispatch] = useStateValue();
+    const [{ user, cartShow }, dispatch] = useStateValue();
 
     const [isDesktopMenu, setIsDesktopMenu] = useState(false);
     const [isMobileMenu, setIsMobileMenu] = useState(false);
-
+    const {
+        totalUniqueItems,
+        items,
+      } = useCart();
 
     // for closing menu on clicking outisde
     const desktopRef = useRef();
@@ -131,10 +134,10 @@ const Header = () => {
                         onClick={showCart}
                     >
                         <MdShoppingBasket className="text-textColor text-2xl  cursor-pointer" />
-                        {cartItems && cartItems.length > 0 && (
+                        {items && items.length > 0 && (
                             <div className=" absolute -top-2 -right-2 w-5 h-5 rounded-full bg-cartNumBg flex items-center justify-center">
                                 <p className="text-xs text-white font-semibold">
-                                    {cartItems.length}
+                                    {totalUniqueItems}
                                 </p>
                             </div>
                         )}
@@ -260,10 +263,10 @@ const Header = () => {
                     onClick={showCart}
                 >
                     <MdShoppingBasket className="text-textColor text-2xl  cursor-pointer" />
-                    {cartItems && cartItems.length > 0 && (
+                    {items && items.length > 0 && (
                         <div className=" absolute -top-2 -right-2 w-5 h-5 rounded-full bg-cartNumBg flex items-center justify-center">
                             <p className="text-xs text-white font-semibold">
-                                {cartItems.length}
+                                {items.length}
                             </p>
                         </div>
                     )}
