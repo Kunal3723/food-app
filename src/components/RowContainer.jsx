@@ -1,9 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
-import { MdShoppingBasket } from "react-icons/md";
+import { MdChevronLeft, MdChevronRight, MdShoppingBasket } from "react-icons/md";
 import { motion } from "framer-motion";
 import NotFound from "../img/NotFound.svg";
 import { useStateValue } from "../context/StateProvider";
 import { actionType } from "../context/reducer";
+import Carousel from "react-multi-carousel";
+import "react-multi-carousel/lib/styles.css";
+import { CustomLeftArrow, CustomRightArrow, responsive } from "../utils/SliderData";
 
 const RowContainer = ({ flag, data, scrollValue }) => {
     const rowContainer = useRef();
@@ -29,12 +32,13 @@ const RowContainer = ({ flag, data, scrollValue }) => {
     }, [items]);
 
     return (
-        <div
+        <Carousel
             ref={rowContainer}
-            className={`w-full flex items-center gap-3  my-12 scroll-smooth  ${flag
-                    ? "overflow-x-scroll scrollbar-none"
-                    : "overflow-x-hidden flex-wrap justify-center"
-                }`}
+            responsive={responsive}
+            customLeftArrow={<CustomLeftArrow />}
+            customRightArrow={<CustomRightArrow />}
+            autoPlay={true}
+            removeArrowOnDeviceType={["tablet", "mobile"]}
         >
             {data && data.length > 0 ? (
                 data.map((item) => (
@@ -50,6 +54,7 @@ const RowContainer = ({ flag, data, scrollValue }) => {
                                 <img
                                     src={item?.imageURL}
                                     alt=""
+
                                     className="w-full h-full object-contain"
                                 />
                             </motion.div>
@@ -85,7 +90,7 @@ const RowContainer = ({ flag, data, scrollValue }) => {
                     </p>
                 </div>
             )}
-        </div>
+        </Carousel>
     );
 };
 

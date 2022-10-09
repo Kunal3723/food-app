@@ -20,25 +20,40 @@ const Header = () => {
 
     const [{ user, cartShow, cartItems }, dispatch] = useStateValue();
 
-    const [isMenu, setIsMenu] = useState(false);
+    const [isDesktopMenu, setIsDesktopMenu] = useState(false);
+    const [isMobileMenu, setIsMobileMenu] = useState(false);
 
-    const imgRef = useRef();
 
+    // for closing menu on clicking outisde
+    const desktopRef = useRef();
+    const mobileRef = useRef();
     useEffect(() => {
         const closeMenu = (e) => {
-            if (e.path[0] !== imgRef.current) {
-                setIsMenu(false);;
+            if (e.path[0] !== desktopRef.current) {
+                setIsDesktopMenu(false);;
             }
-            // console.log(e);
         };
 
         document.body.addEventListener('click', closeMenu);
 
         return () => {
             document.body.removeEventListener('click', closeMenu);
-
         }
-    }, [])
+    }, [isDesktopMenu])
+
+    useEffect(() => {
+        const closeMenu = (e) => {
+            if (e.path[0] !== mobileRef.current) {
+                setIsMobileMenu(false);;
+            }
+        };
+
+        document.body.addEventListener('click', closeMenu);
+
+        return () => {
+            document.body.removeEventListener('click', closeMenu);
+        }
+    }, [isMobileMenu])
 
     const login = async () => {
         if (!user) {
@@ -51,12 +66,14 @@ const Header = () => {
             });
             localStorage.setItem("user", JSON.stringify(providerData[0]));
         } else {
-            setIsMenu(!isMenu);
+            setIsDesktopMenu(!isDesktopMenu);
+            setIsMobileMenu(!isMobileMenu);
         }
     };
 
     const logout = () => {
-        setIsMenu(false);
+        setIsDesktopMenu(false);
+        setIsMobileMenu(false);
         localStorage.clear();
 
         dispatch({
@@ -74,7 +91,7 @@ const Header = () => {
 
     return (
         <header className="fixed z-50 w-screen p-3 px-4 md:p-6 md:px-16 bg-primary">
-            
+
             {/* desktop & tablet */}
             <div className="hidden md:flex w-full h-full items-center justify-between">
 
@@ -128,25 +145,25 @@ const Header = () => {
 
                         {/* Profile Picture */}
                         <motion.img
-                            ref={imgRef}
+                            ref={desktopRef}
                             whileTap={{ scale: 0.6 }}
                             src={user ? user.photoURL : Avatar}
                             className="w-10 min-w-[40px] h-10 min-h-[40px] drop-shadow-xl cursor-pointer rounded-full"
                             alt="userprofile"
                             onClick={login}
                         />
-                        {isMenu && (
+                        {isDesktopMenu && (
                             <motion.div
                                 initial={{ opacity: 0, scale: 0.6 }}
                                 animate={{ opacity: 1, scale: 1 }}
                                 exit={{ opacity: 0, scale: 0.6 }}
                                 className="w-40 bg-gray-50 shadow-xl rounded-lg flex flex-col absolute top-12 right-0"
                             >
-                                {user && user.email === "vetrivel.galaxy@gmail.com" && (
+                                {user && user.email === "dtom7628@gmail.com" && (
                                     <Link to={"/createItem"}>
                                         <p
                                             className="px-4 py-2 flex items-center gap-3 cursor-pointer hover:bg-slate-100 transition-all duration-100 ease-in-out text-textColor text-base"
-                                            onClick={() => setIsMenu(false)}
+                                            onClick={() => setIsDesktopMenu(false)}
                                         >
                                             New Item <MdAdd />
                                         </p>
@@ -172,14 +189,14 @@ const Header = () => {
                 {/* dropdown Menu */}
                 <div className="relative">
                     <motion.img
-                        ref={imgRef}
+                        ref={mobileRef}
                         whileTap={{ scale: 0.6 }}
                         src={user ? user.photoURL : Avatar}
                         className="w-10 min-w-[40px] h-10 min-h-[40px] drop-shadow-xl cursor-pointer rounded-full"
                         alt="userprofile"
                         onClick={login}
                     />
-                    {isMenu && (
+                    {isMobileMenu && (
                         <motion.div
                             initial={{ opacity: 0, scale: 0.6 }}
                             animate={{ opacity: 1, scale: 1 }}
@@ -197,25 +214,25 @@ const Header = () => {
                             <ul className="flex flex-col ">
                                 <li
                                     className="text-base text-textColor hover:text-headingColor duration-100 transition-all ease-in-out cursor-pointer hover:bg-slate-100 px-4 py-2"
-                                    onClick={() => setIsMenu(false)}
+                                    onClick={() => setIsMobileMenu(false)}
                                 >
                                     Home
                                 </li>
                                 <li
                                     className="text-base text-textColor hover:text-headingColor duration-100 transition-all ease-in-out cursor-pointer hover:bg-slate-100 px-4 py-2"
-                                    onClick={() => setIsMenu(false)}
+                                    onClick={() => setIsMobileMenu(false)}
                                 >
                                     Menu
                                 </li>
                                 <li
                                     className="text-base text-textColor hover:text-headingColor duration-100 transition-all ease-in-out cursor-pointer hover:bg-slate-100 px-4 py-2"
-                                    onClick={() => setIsMenu(false)}
+                                    onClick={() => setIsMobileMenu(false)}
                                 >
                                     About Us
                                 </li>
                                 <li
                                     className="text-base text-textColor hover:text-headingColor duration-100 transition-all ease-in-out cursor-pointer hover:bg-slate-100 px-4 py-2"
-                                    onClick={() => setIsMenu(false)}
+                                    onClick={() => setIsMobileMenu(false)}
                                 >
                                     Service
                                 </li>
