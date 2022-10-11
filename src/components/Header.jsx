@@ -25,6 +25,7 @@ const Header = () => {
     const {
         totalUniqueItems,
         items,
+        emptyCart
       } = useCart();
 
     // for closing menu on clicking outisde
@@ -78,7 +79,7 @@ const Header = () => {
         setIsDesktopMenu(false);
         setIsMobileMenu(false);
         localStorage.clear();
-
+        emptyCart();
         dispatch({
             type: actionType.SET_USER,
             user: null,

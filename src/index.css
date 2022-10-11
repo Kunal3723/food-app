@@ -16,6 +16,7 @@ html,
 body {
   scroll-behavior: smooth;
   overflow-x: hidden;
+  user-select: none;
 }
 
 @tailwind base;

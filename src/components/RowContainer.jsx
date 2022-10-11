@@ -34,8 +34,8 @@ const RowContainer = ({ data }) => {
                                 <img
                                     src={item?.imageURL}
                                     alt=""
-
                                     className="w-full h-full object-contain"
+                                    style={{userSelect: 'none'}}
                                 />
                             </motion.div>
                             <motion.div

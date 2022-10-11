@@ -7,21 +7,38 @@ import { useStateValue } from "../context/StateProvider";
 import { actionType } from "../context/reducer";
 import EmptyCart from "../img/emptyCart.svg";
 import CartItem from "./CartItem";
+import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { app } from "../firebase.config";
 
 const CartContainer = () => {
     const [{ cartShow, user }, dispatch] = useStateValue();
+    const firebaseAuth = getAuth(app);
+    const provider = new GoogleAuthProvider();
 
     const {
         items,
         cartTotal,
         emptyCart
-      } = useCart();
+    } = useCart();
 
     const showCart = () => {
         dispatch({
             type: actionType.SET_CART_SHOW,
             cartShow: !cartShow,
         });
+    };
+
+    const login = async () => {
+        if (!user) {
+            const {
+                user: { refreshToken, providerData },
+            } = await signInWithPopup(firebaseAuth, provider);
+            dispatch({
+                type: actionType.SET_USER,
+                user: providerData[0],
+            });
+            localStorage.setItem("user", JSON.stringify(providerData[0]));
+        }
     };
 
     return (
@@ -80,7 +97,7 @@ const CartContainer = () => {
                         <div className="w-full flex items-center justify-between">
                             <p className="text-gray-200 text-xl font-semibold">Total</p>
                             <p className="text-gray-200 text-xl font-semibold">
-                                ${cartTotal+ 2.5}
+                                ${cartTotal + 2.5}
                             </p>
                         </div>
 
@@ -97,6 +114,7 @@ const CartContainer = () => {
                                 whileTap={{ scale: 0.8 }}
                                 type="button"
                                 className="w-full p-2 rounded-full bg-gradient-to-tr from-orange-400 to-orange-600 text-gray-50 text-lg my-2 hover:shadow-lg"
+                                onClick={login}
                             >
                                 Login to check out
                             </motion.button>
