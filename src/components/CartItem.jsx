@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { BiMinus, BiPlus } from "react-icons/bi";
 import { motion } from "framer-motion";
 import { useCart } from "react-use-cart";
