@@ -1,16 +1,37 @@
-import React, { useRef} from "react";
-import {  MdShoppingBasket } from "react-icons/md";
+import React, { useRef } from "react";
+import { MdShoppingBasket } from "react-icons/md";
 import { motion } from "framer-motion";
 import NotFound from "../img/NotFound.svg";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import { CustomLeftArrow, CustomRightArrow, responsive } from "../utils/SliderData";
 import { useCart } from "react-use-cart";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import gif from "../img/verified.gif";
+
 
 const RowContainer = ({ data }) => {
     const rowContainer = useRef();
     const { addItem } = useCart();
-    
+    const notify = (id) => toast(<div className="flex items-center text-xl textline-center"><img className="h-[40px] w-[40px] mr-[5px]" src={gif}/>Added Success</div>, {
+        position: "bottom-right",
+        autoClose: 10000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        containerId: id
+    });
+
+    // function handleClick(item) {
+    //     addItem(item);
+    //     //console.log("Hello Anurag");
+    //     notify;
+    // }
+
     return (
         <Carousel
             ref={rowContainer}
@@ -35,17 +56,32 @@ const RowContainer = ({ data }) => {
                                     src={item?.imageURL}
                                     alt=""
                                     className="w-full h-full object-contain"
-                                    style={{userSelect: 'none'}}
+                                    style={{ userSelect: 'none' }}
                                 />
                             </motion.div>
                             <motion.div
                                 whileTap={{ scale: 0.75 }}
                                 className="w-8 h-8 rounded-full bg-red-600 flex items-center justify-center cursor-pointer hover:shadow-md -mt-8"
-                                onClick={() => addItem(item)}
+                                onClick={()=>{notify(item?.id) ;addItem(item)}}
                             >
                                 <MdShoppingBasket className="text-white" />
+                              
+                            {/* Same as */}
+                          
                             </motion.div>
+                            
                         </div>
+                        
+                          <ToastContainer enableMultiContainer containerId={item?.id}  position="bottom-center"
+                                autoClose={5000}
+                                hideProgressBar={false}
+                                newestOnTop={false}
+                                closeOnClick
+                                rtl={false}
+                                pauseOnFocusLoss={true}
+                                draggable
+                                pauseOnHover={false}
+                                theme="light"/>
 
                         <div className="w-full flex flex-col items-end justify-end -mt-8">
                             <p className="text-textColor font-semibold text-base md:text-lg">
