@@ -8,22 +8,30 @@ import { CustomLeftArrow, CustomRightArrow, responsive } from "../utils/SliderDa
 import { useCart } from "react-use-cart";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import gif from "../img/verified.gif";
+
 
 const RowContainer = ({ data }) => {
     const rowContainer = useRef();
     const { addItem } = useCart();
-
-    const notify = (id) => toast('🦄 Wow so easy!', {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
+    
+    const notify = (id) => toast(<div className="flex items-center text-10 textline-center"><img className="h-[40px] w-[40px] mr-[10px]" src={gif} alt="" />Added Success</div>, {
+        position: "bottom-right",
+        autoClose: 10000,
+        hideProgressBar: true,
         closeOnClick: true,
-        pauseOnHover: true,
+        pauseOnHover: false,
         draggable: true,
         progress: undefined,
         theme: "light",
         containerId: id
     });
+
+    // function handleClick(item) {
+    //     addItem(item);
+    //     //console.log("Hello Anurag");
+    //     notify;
+    // }
 
     return (
         <Carousel
@@ -55,28 +63,26 @@ const RowContainer = ({ data }) => {
                             <motion.div
                                 whileTap={{ scale: 0.75 }}
                                 className="w-8 h-8 rounded-full bg-red-600 flex items-center justify-center cursor-pointer hover:shadow-md -mt-8"
-                                onClick={() => {
-                                    addItem(item);
-                                    notify(item?.id);
-                                }}
+                                onClick={() => { notify(item?.id); addItem(item) }}
                             >
                                 <MdShoppingBasket className="text-white" />
+
+                                {/* Same as */}
+
                             </motion.div>
-                            <ToastContainer
-                                position="bottom-center"
-                                autoClose={5000}
-                                enableMultiContainer 
-                                hideProgressBar={false}
-                                newestOnTop={false}
-                                closeOnClick
-                                rtl={false}
-                                pauseOnFocusLoss
-                                draggable
-                                pauseOnHover
-                                theme="light"
-                                containerId={item?.id}
-                            />
+
                         </div>
+
+                        <ToastContainer toastClassName="foo" style={{ width: "15rem",backgroundColor:"black" }} enableMultiContainer containerId={item?.id} position="bottom-center"
+                            autoClose={5000}
+                            hideProgressBar={false}
+                            newestOnTop={false}
+                            closeOnClick
+                            rtl={false}
+                            pauseOnFocusLoss={true}
+                            draggable
+                            pauseOnHover={false}
+                            theme="light" />
 
                         <div className="w-full flex flex-col items-end justify-end -mt-8">
                             <p className="text-textColor font-semibold text-base md:text-lg">
